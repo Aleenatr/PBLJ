@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+// Custom exception
+class InsufficientBalanceException extends Exception {
+    public InsufficientBalanceException(String message) {
+        super(message);
+    }
+}
+
+public class ATM {
+    private double balance;
+
+    public ATM(double balance) {
+        this.balance = balance;
+    }
+
+    public void withdraw(double amount) throws InsufficientBalanceException {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0");
+        }
+
+        if (amount > balance) {
+            throw new InsufficientBalanceException("Insufficient balance!");
+        }
+
+        balance -= amount;
+        System.out.println("Withdrawal successful. Remaining balance: " + balance);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        ATM atm = new ATM(5000); // starting balance
+
+        try {
+            System.out.print("Enter amount to withdraw: ");
+            double amount = sc.nextDouble();
+
+            atm.withdraw(amount);
+
+        } catch (InsufficientBalanceException e) {
+            System.out.println("Error: " + e.getMessage());
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+
+        } finally {
+            System.out.println("Thank you for using the ATM.");
+        }
+    }
+}
